@@ -2,6 +2,7 @@
 
 
  - name: Host configuration
+   user: ansible
    hosts: "{{ hostgroup }}"
    become: yes
    roles:
@@ -10,6 +11,7 @@
       - cxoracle
 
  - name: Database Server Installation & Database Creation
+   user: ansible
    hosts: "{{ hostgroup }}"
    become: yes
    roles:

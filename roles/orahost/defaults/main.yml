@@ -184,7 +184,6 @@
       - elfutils-libelf-devel.i686
       - elfutils-libelf-devel
       - cpp
-      - lsof
 
   oracle_packages_sles:
       - ksh
@@ -207,7 +206,6 @@
       - libstdc++-devel-32bit
       - libgcc_s1
       - libgcc_s1-32bit
-      - lsof
       - make
       - sysstat
       - xorg-x11-driver-video

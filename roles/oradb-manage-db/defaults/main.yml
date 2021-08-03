@@ -83,13 +83,14 @@
   asmmonitorpassword: "{% if oracle_password is defined %}{{ oracle_password }}{% else %}Oracle123{% endif%}" # The check for the old passwords are there for backwards compatibility and only temporary, will be removed
    # DB
   #default_dbpass: Oracle123
+  #All BMS Oracle passwords in https://cloudbees.atlassian.net/wiki/spaces/ec/pages/1680573815/Setup+Oracle+on+Bare+Metal+Solution+for+CD+Artemis#Oracle-DB-Users:
   default_dbpass: "{% if item is defined and item.oracle_db_passwd is defined %}{{ item.oracle_db_passwd}}{% elif dbh is defined and dbh.oracle_db_passwd is defined %}{{ dbh.oracle_db_passwd }}{% else %}Oracle123{% endif %}"
   dbpasswords:
          orcl:
-           sys: Oracle_456
-           system: Oracle_456
-           dbsnmp: Oracle_456
-           pdbadmin: Oracle_456
+           sys: SEE_PASSWORD_IN_1Password
+           system: SEE_PASSWORD_IN_1Password
+           dbsnmp: SAME_AS_sys_password
+           pdbadmin: SAME_AS_sys_password
 
 ## END-OF-PASSWORDS
 

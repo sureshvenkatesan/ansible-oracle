@@ -44,26 +44,10 @@
 # oracle_EE_options = '' => Nothing to do
 # licence options in 11.2+ must be changed by chopt
 # => use this method for all >= 11.2 (Doc ID 948061.1)
-# touch a statefile instead checking the logfile from chopt
+# test -f => reduce number of executions when > 1 database in oracle_databases for same ORACLE_HOME
 # we cannot use default/main.yml here. => complicated structure for 'enabled' 'disabled'...
-# check for running processes on $ORACLE_HOME/bin/oracle
-# 1st check for installed lsof, because systems could miss it...
 - name: install-home-db | Change Database options with chopt
-  shell: |
-    set -eu
-    if lsof > /dev/null  2>&1 ; then
-      if lsof {{ oracle_home_db }}/bin/oracle > /dev/null 2>&1 ; then
-        echo "running Oracle processes found. Aborting chopt!"
-        exit 10
-      fi
-    else
-      echo "Please install lsof"
-      exit 9
-    fi
-    {{ oracle_home_db }}/bin/chopt {{ item.state | replace(true, 'enable') | replace(false, 'disable') }} {{item.option}} \
-    && touch {{ oracle_home_db }}/install/chopt_{{item.option}}_{{ item.state }}.state
-  args: 
-    creates: "{{ oracle_home_db }}/install/chopt_{{item.option}}_{{ item.state }}.state{{ choptcheck }}"
+  shell: "test -f {{ oracle_home_db }}/install/{{ item.state | replace(true, 'enable') | replace(false, 'disable') }}_{{item.option}}.log || {{ oracle_home_db }}/bin/chopt {{ item.state | replace(true, 'enable') | replace(false, 'disable') }} {{item.option}}"
   with_items:
     - "{{oracle_EE_options}}"
   become: yes
@@ -95,7 +79,7 @@
   become: yes
   become_user: "{{ oracle_user }}"
   run_once: "{{ configure_cluster}}"
-  when: oradbinstall is defined
+  when: oradbinstall
   changed_when: False
   register: opatchls
   tags:
